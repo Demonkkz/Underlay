@@ -1,0 +1,544 @@
+!Software Version V500R001C60SPC300
+#
+sysname FW2
+#
+ l2tp domain suffix-separator @
+#
+vlan batch 1500 to 1501
+#
+authentication-profile name portal_authen_default
+#
+ ipsec sha2 compatible enable
+#
+ undo factory-configuration prohibit
+#
+undo telnet ipv6 server enable
+#
+clock timezone UTC add 00:00:00
+#
+ hrp enable
+ hrp mirror config enable
+ hrp interface GigabitEthernet1/0/2 remote 172.2.2.3
+ hrp mgt-interface GigabitEthernet1/0/1
+ hrp base config enable
+ hrp mirror session enable
+ hrp standby config enable                
+ undo hrp preempt                         
+ hrp track interface Eth-Trunk1           
+ hrp track vlan 1500                      
+ hrp track vlan 1501                      
+#                                         
+ firewall detect ftp                      
+#                                         
+ firewall defend action discard  
+ #                                         
+ interface virtual-if api transform       
+#                                         
+ log type traffic enable                  
+ log type syslog enable                   
+ log type policy enable                   
+#                                         
+ undo dataflow enable                     
+#                                         
+ undo sa force-detection enable           
+#                                         
+ lldp enable                              
+#                                         
+ isp name "china mobile" set filename china-mobile.csv
+ isp name "china unicom" set filename china-unicom.csv
+ isp name "china telecom" set filename china-telecom.csv
+ isp name "china educationnet" set filename china-educationnet.csv
+#                                         
+ user-manage web-authentication security port 8887
+password-policy                           
+ level high                               
+user-manage single-sign-on ad             
+user-manage single-sign-on tsm            
+user-manage single-sign-on radius         
+user-manage auto-sync online-user         
+page-setting                              
+ user-manage security version tlsv1.1 tlsv1.2
+#                                         
+ firewall ids authentication type  aes256 
+#                                         
+ web-manager security version tlsv1.1 tlsv1.2
+ web-manager enable                       
+ web-manager security enable              
+#                                         
+firewall dataplane to manageplane application-apperceive default-action drop
+#                                         
+ update schedule ips-sdb daily 04:56      
+ update schedule av-sdb daily 04:56       
+ update schedule sa-sdb daily 04:56       
+ update schedule ip-reputation daily 04:56
+ update schedule cnc daily 04:56          
+ update schedule file-reputation daily 04:56
+#                                         
+ set disk-scan parameter attach on        
+ set disk-scan parameter cycle 15         
+ set disk-scan parameter iostat 80        
+ set disk-scan parameter speed 10         
+ set disk-scan parameter switch on        
+ set disk-scan parameter parallel 50      
+ disk-usage alarm threshold 95            
+#                                         
+vsys enable                               
+resource-class r0                         
+#                                         
+#                                         
+vsys name vsys_d8af4d5e90d62a84 1         
+ assign vlan 1500                         
+#                                         
+vsys name vsys_95364e7c9f112d5d 2         
+ assign vlan 1501                         
+#                                         
+ip vpn-instance default                   
+ ipv4-family                              
+#                                         
+ip vpn-instance vsys_95364e7c9f112d5d     
+ ipv4-family                              
+#                                         
+ip vpn-instance vsys_d8af4d5e90d62a84     
+ ipv4-family                              
+#                                         
+ time-range worktime                      
+  period-range 08:00:00 to 18:00:00 working-day
+#                                         
+ike proposal default                      
+ encryption-algorithm aes-256 aes-192 aes-128
+ dh group14                               
+ authentication-algorithm sha2-512 sha2-384 sha2-256
+ authentication-method pre-share          
+ integrity-algorithm hmac-sha2-256        
+ prf hmac-sha2-256                        
+#                                         
+web-auth-server default                   
+ port 50100                               
+#                                         
+portal-access-profile name default        
+#                                         
+aaa                                       
+ authentication-scheme default            
+ authentication-scheme admin_local        
+ authentication-scheme admin_radius_local 
+ authentication-scheme admin_hwtacacs_local
+ authentication-scheme admin_ad_local     
+ authentication-scheme admin_ldap_local   
+ authentication-scheme admin_radius       
+ authentication-scheme admin_hwtacacs     
+ authentication-scheme admin_ad           
+ authentication-scheme admin_ldap         
+ authorization-scheme default             
+ accounting-scheme default                
+ domain default                           
+  service-type internetaccess ssl-vpn l2tp ike
+  internet-access mode password           
+  reference user current-domain           
+ manager-user netconf-admin               
+  password cipher @%@%-|qb#L/SDXm#7AImrku#A2'3t_+MI*A}}C^LoH#(+\*L2'6A@%@%
+  service-type api                        
+  level 15                                
+  authentication-scheme admin_local       
+                                          
+ manager-user audit-admin                 
+  password cipher @%@%M-mj&00!OW&9P3D8;n^I/25)W#i=GhebQM~`AtB9,lrP25,/@%@%
+  service-type web terminal               
+  level 15                                
+                                          
+ manager-user api-admin                   
+  password cipher @%@%'f0x=d<Up!8!xU5HV^r,+H+e!Vo`~0yzd=2lrUBU*JKSH+h+@%@%
+  service-type api                        
+  level 15                                
+                                          
+ manager-user admin                       
+  password cipher @%@%&{rJ7bxoDXc:"gV>Se7E|e`KSQ\b=wA^J0(x^!LWcBo%e`N|@%@%
+  service-type web terminal               
+  level 15                                
+                                          
+ manager-user admin1234                   
+  password cipher @%@%X4x9T#aM\Toc|A(7e>SWv>D1fRQ[~iFOL9&e]\J/SOf1>D4v@%@%
+  service-type telnet                     
+  level 3                                 
+  access-limit 1                          
+                                          
+ role system-admin                        
+ role device-admin                        
+ role device-admin(monitor)               
+ role audit-admin                         
+ bind manager-user audit-admin role audit-admin
+ bind manager-user admin role system-admin
+#                                         
+interface Vlanif1500                      
+ ip binding vpn-instance vsys_d8af4d5e90d62a84
+ ip address 10.125.97.242 255.255.255.252 
+#                                         
+interface Vlanif1501                      
+ ip binding vpn-instance vsys_95364e7c9f112d5d
+ ip address 10.125.97.246 255.255.255.252 
+#                                         
+interface Eth-Trunk1                      
+ portswitch                               
+ port link-type trunk                     
+ undo port trunk allow-pass vlan 1        
+ port trunk allow-pass vlan 1500 to 1501  
+#                                         
+l2tp-group default-lns                    
+#                                         
+interface GigabitEthernet0/0/0            
+ undo shutdown                            
+ ip binding vpn-instance default          
+ ip address 192.168.0.1 255.255.255.0     
+ service-manage http permit               
+ service-manage https permit              
+ service-manage ping permit               
+#                                         
+interface GigabitEthernet1/0/0            
+ undo shutdown                            
+#                                         
+interface GigabitEthernet1/0/1            
+ undo shutdown                            
+ ip address 172.168.5.15 255.255.0.0      
+ service-manage http permit               
+ service-manage https permit              
+ service-manage ping permit               
+ service-manage ssh permit                
+ service-manage snmp permit               
+ service-manage telnet permit             
+ service-manage netconf permit            
+#                                         
+interface GigabitEthernet1/0/2            
+ undo shutdown                            
+ ip address 172.2.2.2 255.255.255.0       
+#                                         
+interface GigabitEthernet1/0/3            
+ undo shutdown                            
+#                                         
+interface GigabitEthernet1/0/4            
+ undo shutdown                            
+ eth-trunk 1                              
+#                                         
+interface GigabitEthernet1/0/5            
+ undo shutdown                            
+ eth-trunk 1                              
+#                                         
+interface GigabitEthernet1/0/6            
+ undo shutdown                            
+#                                         
+interface GigabitEthernet1/0/7            
+ undo shutdown                            
+#                                         
+interface GigabitEthernet1/0/8            
+ undo shutdown                            
+#                                         
+interface GigabitEthernet1/0/9            
+ undo shutdown                            
+#                                         
+interface GigabitEthernet1/0/10           
+ undo shutdown                            
+#                                         
+interface GigabitEthernet1/0/11           
+ undo shutdown                            
+#                                         
+interface Virtual-if0                     
+#                                         
+interface Virtual-if1                     
+#                                         
+interface Virtual-if2                     
+#                                         
+interface NULL0                           
+#                                         
+firewall zone local                       
+ set priority 100                         
+#                                         
+firewall zone trust                       
+ set priority 85                          
+ add interface GigabitEthernet0/0/0       
+ add interface GigabitEthernet1/0/1       
+#                                         
+firewall zone untrust                     
+ set priority 5                           
+ add interface Virtual-if0                
+#                                         
+firewall zone dmz                         
+ set priority 50                          
+ add interface GigabitEthernet1/0/2       
+#                                         
+api                                       
+ api netconf port 1025                    
+ api netconf enable                       
+#                                         
+ip route-static 192.168.4.0 255.255.255.0 172.168.5.2
+#                                         
+snmp-agent                                
+snmp-agent local-engineid 800007DB03F02FA73B2718
+snmp-agent sys-info version v3            
+snmp-agent group v3 ACTRAP privacy read-view rd write-view wt notify-view nt
+snmp-agent group v3 dc-admin privacy read-view rd write-view wt notify-view nt
+snmp-agent target-host trap address udp-domain 192.168.4.4 udp-port 1025 params securityname ACTrap_huawei v3 privacy private-netmanager
+snmp-agent target-host trap address udp-domain 192.168.4.4 udp-port 1025 params securityname actrap_huawei v3 privacy private-netmanager
+snmp-agent mib-view included nt iso       
+snmp-agent mib-view included rd iso       
+snmp-agent mib-view included wt iso       
+snmp-agent mib-view included iso-view iso 
+snmp-agent usm-user v3 admin              
+snmp-agent usm-user v3 admin group dc-admin
+snmp-agent usm-user v3 admin authentication-mode sha cipher %^%#D)BFSH|vIB5LJVHaj2^@E&n9;6.tb;#1TNXVCWP@%^%#
+snmp-agent usm-user v3 admin privacy-mode aes128 cipher %^%#7wne66yt@9J.o&+&]W-S-uv^3c8+:NNrSh'i,SHL%^%#
+snmp-agent usm-user v3 admin1234          
+snmp-agent usm-user v3 admin1234 group dc-admin
+snmp-agent usm-user v3 admin1234 authentication-mode sha cipher %^%#q1v$A\C0#R%rI%Ji9Mf0x@kfIx1QM3]8m_$Z2A09%^%#
+snmp-agent usm-user v3 admin1234 privacy-mode aes128 cipher %^%#;dl<EKo=~(''4}8Bo9!"zlzEC>quf"U`x~MOZCd4%^%#
+snmp-agent usm-user v3 ACTrap_huawei      
+snmp-agent usm-user v3 ACTrap_huawei group ACTRAP
+snmp-agent usm-user v3 ACTrap_huawei authentication-mode sha cipher %^%#,jSgJDFs07D#!"-tl`c=+svs08i`<14#;e-"EF:1%^%#
+snmp-agent usm-user v3 ACTrap_huawei privacy-mode aes128 cipher %^%#roJcK@5e>B^E>X5U|ox%DK&BJ]VdIVH;*^Su.OSA%^%#
+snmp-agent usm-user v3 actrap_huawei      
+snmp-agent usm-user v3 actrap_huawei group actrap
+snmp-agent trap source GigabitEthernet1/0/1
+snmp-agent trap enable                    
+#                                         
+undo ssh server compatible-ssh1x enable   
+#                                         
+user-interface con 0                      
+ authentication-mode aaa                  
+user-interface vty 0 4                    
+ authentication-mode aaa                  
+ protocol inbound telnet                  
+user-interface vty 16 20                  
+#                                         
+pki realm default                         
+ undo crl auto-update enable              
+#                                         
+sa                                        
+#                                         
+location                                  
+#                                         
+multi-interface                           
+ mode proportion-of-weight                
+#                                         
+right-manager server-group                
+#                                         
+agile-network                             
+#                                         
+device-classification                     
+ device-group pc                          
+ device-group mobile-terminal             
+ device-group undefined-group             
+#                                         
+user-manage server-sync tsm               
+#                                         
+security-policy                           
+ default action permit                    
+#                                         
+auth-policy                               
+#                                         
+traffic-policy                            
+#                                         
+policy-based-route                        
+#                                         
+nat-policy                                
+#                                         
+proxy-policy                              
+#                                         
+quota-policy                              
+#                                         
+pcp-policy                                
+#                                         
+dns-transparent-policy                    
+ mode based-on-multi-interface            
+#                                         
+rightm-policy                             
+#                                         
+ sms                                      
+#                                         
+return                                    
+#                                         
+switch vsys vsys_d8af4d5e90d62a84         
+#                                         
+ l2tp domain suffix-separator @           
+#                                         
+ firewall detect ftp                      
+ firewall detect rtsp                     
+ firewall detect sip                      
+ firewall detect sqlnet                   
+ firewall detect pptp                     
+ firewall detect dns                      
+#                                         
+ firewall defend action discard           
+#                                         
+password-policy                           
+ level high                               
+#                                         
+ time-range worktime                      
+  period-range 08:00:00 to 18:00:00 working-day
+#                                         
+aaa                                       
+ authentication-scheme default            
+ authentication-scheme admin_local        
+ authentication-scheme admin_radius_local 
+ authentication-scheme admin_hwtacacs_local
+ authentication-scheme admin_ad_local     
+ authentication-scheme admin_ldap_local   
+ authentication-scheme admin_radius       
+ authentication-scheme admin_hwtacacs     
+ authentication-scheme admin_ad           
+ authentication-scheme admin_ldap         
+ authorization-scheme default             
+ accounting-scheme default                
+ domain default                           
+  service-type internetaccess ssl-vpn l2tp ike
+  internet-access mode password           
+  reference user current-domain           
+ role system-admin                        
+ role device-admin                        
+ role device-admin(monitor)               
+ role audit-admin                         
+#                                         
+interface Vlanif1500                      
+ ip binding vpn-instance vsys_d8af4d5e90d62a84
+ ip address 10.125.97.242 255.255.255.252 
+#                                         
+l2tp-group default-lns                    
+#                                         
+interface Virtual-if1                     
+#                                         
+sa                                        
+#                                         
+firewall zone local                       
+ set priority 100                         
+#                                         
+firewall zone trust                       
+ set priority 85                          
+ add interface Vlanif1500                 
+#                                         
+firewall zone untrust                     
+ set priority 5                           
+ add interface Virtual-if1                
+#                                         
+firewall zone dmz                         
+ set priority 50                          
+#                                         
+location                                  
+#                                         
+multi-interface                           
+ mode proportion-of-weight                
+#                                         
+security-policy                           
+ default action permit                    
+#                                         
+auth-policy                               
+#                                         
+traffic-policy                            
+ public-ip destination match enable       
+ public-ip source match enable            
+#                                         
+policy-based-route                        
+#                                         
+nat-policy                                
+#                                         
+proxy-policy                              
+#                                         
+quota-policy                              
+#                                         
+pcp-policy                                
+#                                         
+ip route-static 172.168.10.0 255.255.255.0 10.125.97.241
+#                                         
+ sms                                      
+#                                         
+return                                    
+#                                         
+switch vsys vsys_95364e7c9f112d5d         
+#                                         
+ l2tp domain suffix-separator @           
+#                                         
+ firewall detect ftp                      
+ firewall detect rtsp                     
+ firewall detect sip                      
+ firewall detect sqlnet                   
+ firewall detect pptp                     
+ firewall detect dns                      
+#                                         
+ firewall defend action discard           
+#                                         
+password-policy                           
+ level high                               
+#                                         
+ time-range worktime                      
+  period-range 08:00:00 to 18:00:00 working-day
+#                                         
+aaa                                       
+ authentication-scheme default            
+ authentication-scheme admin_local        
+ authentication-scheme admin_radius_local 
+ authentication-scheme admin_hwtacacs_local
+ authentication-scheme admin_ad_local     
+ authentication-scheme admin_ldap_local   
+ authentication-scheme admin_radius       
+ authentication-scheme admin_hwtacacs     
+ authentication-scheme admin_ad           
+ authentication-scheme admin_ldap         
+ authorization-scheme default             
+ accounting-scheme default                
+ domain default                           
+  service-type internetaccess ssl-vpn l2tp ike
+  internet-access mode password           
+  reference user current-domain           
+ role system-admin                        
+ role device-admin                        
+ role device-admin(monitor)               
+ role audit-admin                         
+#                                         
+interface Vlanif1501                      
+ ip binding vpn-instance vsys_95364e7c9f112d5d
+ ip address 10.125.97.246 255.255.255.252 
+#                                         
+l2tp-group default-lns                    
+#                                         
+interface Virtual-if2                     
+#                                         
+sa                                        
+#                                         
+firewall zone local                       
+ set priority 100                         
+#                                         
+firewall zone trust                       
+ set priority 85                          
+ add interface Vlanif1501                 
+#                                         
+firewall zone untrust                     
+ set priority 5                           
+ add interface Virtual-if2                
+#                                         
+firewall zone dmz                         
+ set priority 50                          
+#                                         
+location                                  
+#                                         
+multi-interface                           
+ mode proportion-of-weight                
+#                                         
+security-policy                           
+ default action permit                    
+#                                         
+auth-policy                               
+#                                         
+traffic-policy                            
+ public-ip destination match enable       
+ public-ip source match enable            
+#                                         
+policy-based-route                        
+#                                         
+nat-policy                                
+#                                         
+proxy-policy                              
+#                                         
+quota-policy                              
+#                                         
+pcp-policy                                
+#                                         
+ip route-static 172.168.10.0 255.255.255.0 10.125.97.245
+#                                         
+ sms                                      
+#                                         
+return 
