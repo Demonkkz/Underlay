@@ -1,0 +1,350 @@
+!Software Version V200R002C50
+!Last configuration was updated at 2018-09-19 17:13:10+00:00 by client@huawei.com
+#
+sysname Leaf-3
+#
+system resource standard
+#
+device board 1 board-type CE6851-48S6Q-HI
+#
+drop-profile default
+#
+dcb pfc
+#
+dcb ets-profile default
+#
+vlan batch 10 to 11 90 4001 to 4011
+#
+mac-address flapping periodical trap enable
+#
+rsa peer-public-key 192.168.4.4
+ public-key-code begin
+ 3082010A
+  02820101
+    00EBFBED 197188E7 B49CD8D3 4C08B850 88D82D13 B06B1EA6 5C7DC69F D16CBC3E
+    9CEFDF43 0AA88717 BE2A6746 DA7381E7 67DF19D1 038BCF80 F6F162D9 B0DAB537
+    007019CD 641655EA 8CA12964 91B7AD7A 35295787 709F16B8 1DE42B36 6A3BCCEB
+    4E5E1E9E B24224E1 287F76E4 70E87104 64B77CB3 001CA96B 9E97443A 9DBB3E99
+    984ADC0C 14078715 3E5C185F 5DA6FBA4 48255D0D 7363F0B6 9FDDCAD8 AABBB904
+    D498185E 44DCD936 02BB475F 41F62A0C 06B37056 87DC5D2D 5E643886 C5E9377E
+    0018032F 30D236FA 4A52B833 C0FF53CD 0842E6B9 2B97CBF0 0037692B B467076F
+    1A9AC366 7823365E B281FD22 EA8655A4 CF3E83B0 B0021144 F08A3A78 0BA7BCB8
+    1D          
+  0203          
+    010001      
+ public-key-code end
+ peer-public-key end
+#               
+evpn-overlay enable
+#               
+telnet ipv6 server disable
+#               
+diffserv domain default
+#               
+sdn agent       
+ controller-ip 192.168.4.4
+  openflow agent
+   transport-address 172.168.5.2
+#               
+bridge-domain 777
+ vxlan vni 777  
+#               
+bridge-domain 888
+ vxlan vni 888  
+#               
+acl number 2001 
+#               
+aaa             
+ local-user admin1234 password irreversible-cipher $1c$$hm61)q+@2$l=Su>!$oDSiV2Y-JuYtYW4.<Jh5]ADFD30Qw|+jO$
+ local-user admin1234 service-type telnet
+ local-user admin1234 level 3
+ local-user client@huawei.com password irreversible-cipher $1c$(0wnCbPY)O$,h\0VOcXjMnpt,6r](w1NI0HFpY+NWNPp08$TkG8$
+ local-user client@huawei.com service-type ssh
+ local-user client@huawei.com level 3
+ #              
+ authentication-scheme default
+ #              
+ authorization-scheme default
+ #              
+ accounting-scheme default
+ #              
+ domain default 
+ #              
+ domain default_admin
+#               
+stack           
+#               
+interface Vbdif777
+ ip address 200.200.200.200 255.255.255.0
+#               
+interface Vbdif888
+ ip address 100.100.100.100 255.255.255.0
+#               
+interface Vlanif1
+#               
+interface Vlanif10
+ ip address 172.168.5.2 255.255.255.0
+#               
+interface Vlanif11
+ ip address 192.168.6.200 255.255.255.0
+#               
+interface Vlanif90
+ ip address 192.168.4.254 255.255.255.0
+#               
+interface Vlanif4004
+ ip address 10.1.1.1 255.255.255.0
+#               
+interface Vlanif4005
+ ip address 10.1.2.1 255.255.255.0
+#               
+interface Vlanif4006
+ ip address 10.1.3.1 255.255.255.0
+#               
+interface Vlanif4008
+ ip address 10.1.4.1 255.255.255.0
+#               
+interface Vlanif4009
+#               
+interface MEth0/0/0
+#               
+interface Eth-Trunk1
+ service type tunnel
+#               
+interface 10GE1/0/1
+ port link-type trunk
+ port trunk pvid vlan 4007
+ port trunk allow-pass vlan 10 4001 to 4008
+#               
+interface 10GE1/0/2
+ device transceiver 10GBASE-COPPER
+#               
+interface 10GE1/0/3
+ device transceiver 10GBASE-COPPER
+#               
+interface 10GE1/0/4
+#               
+interface 10GE1/0/5
+ port link-type trunk
+ port trunk allow-pass vlan 10
+#               
+interface 10GE1/0/6
+ undo portswitch
+ ip address 192.168.1.58 255.255.255.252
+ device transceiver 10GBASE-COPPER
+#               
+interface 10GE1/0/7
+#               
+interface 10GE1/0/8
+#               
+interface 10GE1/0/9
+ undo portswitch
+ ip address 192.168.1.38 255.255.255.252
+ device transceiver 10GBASE-COPPER
+#               
+interface 10GE1/0/10
+#               
+interface 10GE1/0/11
+ port default vlan 90
+ device transceiver 10GBASE-COPPER
+#               
+interface 10GE1/0/12
+ port link-type trunk
+ port trunk allow-pass vlan 10 4004 to 4011
+ device transceiver 10GBASE-COPPER
+#               
+interface 10GE1/0/13
+ device transceiver 1000BASE-T
+#               
+interface 10GE1/0/14
+#               
+interface 10GE1/0/15
+#               
+interface 10GE1/0/16
+ description to - V3
+ port link-type trunk
+ port trunk allow-pass vlan 4008 to 4009
+#               
+interface 10GE1/0/17
+ undo portswitch
+ ip address 10.1.5.49 255.255.255.0
+ device transceiver 1000BASE-T
+#               
+interface 10GE1/0/18
+#               
+interface 10GE1/0/19
+#               
+interface 10GE1/0/20
+ device transceiver 10GBASE-COPPER
+#               
+interface 10GE1/0/21
+#               
+interface 10GE1/0/22
+#               
+interface 10GE1/0/23
+ description connected with tor[ge0/0/23]
+ port link-type trunk
+ port trunk allow-pass vlan 10 4004 to 4009
+#               
+interface 10GE1/0/24
+ port link-type trunk
+ port trunk allow-pass vlan 10 4004 to 4009
+ device transceiver 1000BASE-T
+#               
+interface 10GE1/0/25
+ device transceiver 10GBASE-COPPER
+#               
+interface 10GE1/0/26
+#               
+interface 10GE1/0/27
+#               
+interface 10GE1/0/28
+#               
+interface 10GE1/0/29
+#               
+interface 10GE1/0/30
+#               
+interface 10GE1/0/31
+#               
+interface 10GE1/0/32
+#               
+interface 10GE1/0/33
+#               
+interface 10GE1/0/34
+#               
+interface 10GE1/0/35
+#               
+interface 10GE1/0/36
+#               
+interface 10GE1/0/37
+#               
+interface 10GE1/0/38
+#               
+interface 10GE1/0/39
+#               
+interface 10GE1/0/40
+#               
+interface 10GE1/0/41
+#               
+interface 10GE1/0/42
+#               
+interface 10GE1/0/43
+#               
+interface 10GE1/0/44
+#               
+interface 10GE1/0/45
+#               
+interface 10GE1/0/46
+#               
+interface 10GE1/0/47
+#               
+interface 10GE1/0/48
+#               
+interface 40GE1/0/1
+#               
+interface 40GE1/0/2
+#               
+interface 40GE1/0/3
+#               
+interface 40GE1/0/4
+#               
+interface 40GE1/0/5
+#               
+interface 40GE1/0/6
+#               
+interface LoopBack0
+ ip address 10.3.3.3 255.255.255.255
+#               
+interface LoopBack1
+ ip address 11.6.6.6 255.255.255.255
+#               
+interface Nve1  
+ source 10.3.3.3
+#               
+interface NULL0 
+#               
+bgp 100         
+ router-id 11.6.6.6
+ peer 192.168.1.37 as-number 100
+ peer 192.168.1.57 as-number 100
+ #              
+ ipv4-family unicast
+  peer 192.168.1.37 enable
+  peer 192.168.1.57 enable
+ #              
+ l2vpn-family evpn
+  policy vpn-target
+  peer 192.168.1.37 enable
+  peer 192.168.1.37 advertise irb
+  peer 192.168.1.57 enable
+  peer 192.168.1.57 advertise irb
+#               
+ospf 1 router-id 11.6.6.6
+ stub-router on-startup 600 include-stub
+ area 0.0.0.0   
+  network 10.3.3.3 0.0.0.0
+  network 11.6.6.6 0.0.0.0
+  network 172.168.1.36 0.0.0.3
+  network 172.168.1.56 0.0.0.3
+  network 192.168.1.36 0.0.0.3
+  network 192.168.1.56 0.0.0.3
+#               
+snmp-agent      
+snmp-agent local-engineid 800007DB0348FD8E6E69E1
+#               
+snmp-agent sys-info version v3
+snmp-agent group v3 ACTRAP privacy read-view iso notify-view iso
+snmp-agent group v3 dc-admin privacy read-view rd write-view wt notify-view nt
+snmp-agent target-host host-name ACController trap address udp-domain 192.168.4.4 udp-port 1666 params securityname ACTrap_huawei v3 privacy private-netmanager
+#               
+snmp-agent mib-view included nt iso
+snmp-agent mib-view included rd iso
+snmp-agent mib-view included wt iso
+snmp-agent mib-view included iso iso
+snmp-agent mib-view included iso-view iso
+snmp-agent usm-user v3 admin
+snmp-agent usm-user v3 admin group dc-admin
+snmp-agent usm-user v3 admin authentication-mode sha cipher %^%#JoEjI)LuyMKxFWX5*]@>wq]X$!L|p'`:({A&*7VI%^%#
+snmp-agent usm-user v3 admin privacy-mode aes128 cipher %^%#p,v<+LFp>6F$2_"[6eO-U#~IX*SI#R+sXMF(R0H(%^%#
+snmp-agent usm-user v3 ACTrap_huawei
+snmp-agent usm-user v3 ACTrap_huawei group ACTRAP
+snmp-agent usm-user v3 ACTrap_huawei authentication-mode sha cipher %^%#gxJO)5ud=N0p8QV2nI[Nkv-[.E<OHN:J)P.ej"EN%^%#
+snmp-agent usm-user v3 ACTrap_huawei privacy-mode aes128 cipher %^%#J^10D3E;aXz8`FP;Iur,g<ptR_h+M<N7s;9_{k9+%^%#
+#               
+snmp-agent trap source MEth0/0/0
+#               
+snmp-agent trap enable
+#               
+lldp enable     
+#               
+snetconf ipv4 server enable
+snetconf ipv6 server enable
+ssh user client@huawei.com
+ssh user client@huawei.com authentication-type password
+ssh user client@huawei.com service-type snetconf
+ssh authorization-type default aaa
+#               
+ssh server cipher aes256_ctr aes128_ctr
+ssh server hmac sha2_256_96 sha2_256 sha1_96
+ssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
+#               
+ssh client 192.168.4.4 assign rsa-key 192.168.4.4
+#               
+user-interface maximum-vty 8
+#               
+user-interface con 0
+#               
+user-interface vty 0 4
+ acl 2001 inbound
+ authentication-mode aaa
+ user privilege level 3
+ idle-timeout 20 0
+ protocol inbound ssh
+#               
+user-interface vty 5 7
+ acl 2001 inbound
+ authentication-mode aaa
+ idle-timeout 20 0
+#               
+vm-manager      
+#               
+return
