@@ -1,0 +1,89 @@
+#
+ sysname Router
+#
+ drop illegal-mac alarm
+#
+vlan batch 1499
+#
+ lldp enable 
+#
+dhcp enable
+#
+pki realm default
+ enrollment self-signed
+#
+ssl policy default_policy type server
+ pki-realm default
+#
+aaa
+ authentication-scheme default
+ authorization-scheme default
+ accounting-scheme default
+ domain default
+ domain default_admin
+ local-user admin password irreversible-cipher %^%#_/PQX<U-tN4EE[Q&{<p!i+WC)DQY+#PQ)NVOBkDO\opv3fo_+D\EA>4'kvD%%^%#
+ local-user admin privilege level 15      
+ local-user admin service-type terminal http
+ local-user admin1234 password irreversible-cipher %^%#AC@SQT#8\Su`0c1P"Q5HV1]8P'4xN23;QRY{F5.1!wP@0PDSy27kn&KoFLP!%^%#
+ local-user admin1234 privilege level 3   
+ local-user admin1234 service-type telnet 
+#                                         
+firewall zone Local                       
+ priority 64                              
+#                                         
+interface GigabitEthernet0/0/0            
+ ip address 172.168.5.17 255.255.255.0    
+#                                         
+interface GigabitEthernet0/0/1            
+ ip address dhcp-alloc                    
+#                                         
+interface GigabitEthernet0/0/1.1          
+ dot1q termination vid 1499               
+ ip address 100.1.1.2 255.255.255.252     
+#                                         
+interface GigabitEthernet0/0/2            
+#                                         
+interface GigabitEthernet0/0/3            
+ description VirtualPort                  
+#                                         
+interface Cellular0/0/0                   
+#                                         
+interface Cellular0/0/1                   
+#                                         
+interface NULL0                           
+#                                         
+interface LoopBack1                       
+#                                         
+interface LoopBack2                       
+ ip address 30.1.1.1 255.255.255.255      
+#                                         
+ snmp-agent local-engineid 800007DB039C7DA3929E18
+#                                         
+ telnet server enable                     
+#                                         
+ http secure-server ssl-policy default_policy
+ http server enable                       
+ http secure-server enable                
+#                                         
+ip route-static 0.0.0.0 0.0.0.0 100.1.1.1 
+ip route-static 20.20.20.0 255.255.255.0 100.1.1.1
+#                                         
+user-interface con 0                      
+ authentication-mode aaa                  
+user-interface vty 0                      
+ authentication-mode aaa                  
+ user privilege level 15                  
+user-interface vty 1 4                    
+ authentication-mode aaa                  
+#                                         
+wlan ac                                   
+#                                         
+voice                                     
+ #                                        
+ diagnose                                 
+#                                         
+ops                                       
+#                                         
+autostart                                 
+#                                         
+return 
