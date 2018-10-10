@@ -1,0 +1,171 @@
+!Software Version V200R008C00SPC500
+#
+sysname tor
+#
+vlan batch 10 20 4004 to 4007
+#
+telnet server enable
+#
+lldp enable
+#
+diffserv domain default
+#
+acl number 2001
+#
+drop-profile default
+#
+aaa
+ authentication-scheme default
+ authorization-scheme default
+ accounting-scheme default
+ domain default
+ domain default_admin
+ local-user admin password irreversible-cipher %^%#01_bX=f&|%YP5mP&LrGFe"\Q6a<5WAejB_8j8l@A$Le894<Xd+.Ry6EXb:S5%^%#
+ local-user admin service-type telnet
+ local-user admin123 password irreversible-cipher %^%#}C:\L]&IrX33W:)S[J5AIoCt5MKVW+gmI*Z[*xbHFWCU;qZ435/SZDQyJ7^%%^%#
+ local-user admin123 privilege level 0    
+ local-user admin123 service-type telnet  
+ local-user admin123 user-type netmanager 
+ local-user admin1234 password irreversible-cipher %^%#Gt+pF9$lmM`6U]2PpVsFKY+,UmJUDE8fCX*RI(zJc{jV'F[+=P4Zv;!pP@(.%^%#
+ local-user admin1234 privilege level 3   
+ local-user admin1234 service-type telnet 
+#                                         
+interface Vlanif1                         
+#                                         
+interface Vlanif10                        
+ ip address 172.168.5.40 255.255.255.0    
+#                                         
+interface Vlanif19                        
+#                                         
+interface Vlanif20                        
+#                                         
+interface MEth0/0/1                       
+#                                         
+interface GigabitEthernet0/0/1            
+ description Connected with Switch 1(Eth) 
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/2            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/3            
+ description connected with Switch 3(Eth) 
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/4            
+ description connected with Switch 4(Eth) 
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/5            
+ description connected with Router(G0/0/1)
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/6            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/7            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/8            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/9            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/10           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/11           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/12           
+ description connected with external router(g0/0/38)
+ port link-type trunk                     
+ port trunk allow-pass vlan 10 4004 to 4007
+#                                         
+interface GigabitEthernet0/0/13           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/14           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/15           
+#                                         
+interface GigabitEthernet0/0/16           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/17           
+#                                         
+interface GigabitEthernet0/0/18           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/19           
+#                                         
+interface GigabitEthernet0/0/20           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/21           
+#                                         
+interface GigabitEthernet0/0/22           
+#                                         
+interface GigabitEthernet0/0/23           
+ description connected with Switch 2-leaf 3(g0/0/24)
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/24           
+ port link-type trunk                     
+ port trunk allow-pass vlan 10 4004 to 4007
+#                                         
+interface GigabitEthernet0/0/25           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/26           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet0/0/27           
+#                                         
+interface GigabitEthernet0/0/28           
+#                                         
+interface XGigabitEthernet0/0/1           
+#                                         
+interface XGigabitEthernet0/0/2           
+#                                         
+interface XGigabitEthernet0/0/3           
+#                                         
+interface XGigabitEthernet0/0/4           
+#                                         
+interface NULL0                           
+#                                         
+ip route-static 192.168.4.0 255.255.255.0 172.168.5.2
+#                                         
+user-interface maximum-vty 10             
+user-interface con 0                      
+user-interface vty 0 4                    
+ authentication-mode aaa                  
+ user privilege level 3                   
+ protocol inbound telnet                  
+user-interface vty 5 7                    
+ authentication-mode aaa                  
+user-interface vty 8 9                    
+user-interface vty 16 20                  
+#                                         
+return

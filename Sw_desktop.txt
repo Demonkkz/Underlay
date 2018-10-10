@@ -1,0 +1,238 @@
+!Software Version V200R005C00SPC500
+#
+sysname sw-desktop
+#
+vlan batch 10 172 4004 to 4008
+#
+telnet server enable
+#
+lldp enable
+#
+aaa
+ authentication-scheme default
+ authorization-scheme default
+ accounting-scheme default
+ domain default
+ domain default_admin
+ local-user admin password irreversible-cipher %@%@LMh7*wiDrUwZct~~.^8*D5/QDMsiD"=]`LgT4x>H-.o<5/TD%@%@
+ local-user admin service-type http
+#
+interface Vlanif1
+#
+interface Vlanif10
+ ip address 172.168.5.254 255.255.255.0
+#
+interface Vlanif172                       
+ ip address 172.18.2.1 255.255.0.0        
+#                                         
+interface MEth0/0/1                       
+#                                         
+interface GigabitEthernet1/0/1            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/2            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/3            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/4            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/5            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/6            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/7            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/8            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/9            
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/10           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/11           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/12           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/13           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/14           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/15           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/16           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/17           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/18           
+ description to-pc-ok                     
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/19           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/20           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/21           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/22           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/23           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/24           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/25           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/26           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/27           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/28           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/29           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/30           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/31           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/32           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/33           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/34           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/35           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/36           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/37           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/38           
+ port link-type trunk                     
+ port trunk allow-pass vlan 2 to 4094     
+#                                         
+interface GigabitEthernet1/0/39           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/40           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/41           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/42           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/43           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/44           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/45           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/46           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/47           
+ port link-type access                    
+ port default vlan 10                     
+#                                         
+interface GigabitEthernet1/0/48           
+ description connet-tor                   
+ port link-type trunk                     
+ port trunk allow-pass vlan 2 to 4094     
+#                                         
+interface NULL0                           
+#                                         
+ip route-static 192.168.4.0 255.255.255.128 172.168.5.40
+#                                         
+user-interface con 0                      
+ authentication-mode password             
+ set authentication password cipher $1a$kqSBUPc_2L$H#XpE9D@#+:JbSFEghHLX=(tSABZ[03wB~6vY+[X$
+user-interface vty 0 4                    
+ authentication-mode password             
+ user privilege level 15                  
+ set authentication password cipher $1a$"3I&GuIpRC$=q0XP)#PI+lJ*p;LY3aF1w*F&+QX;G^oQvOm13=Z$
+ protocol inbound telnet                  
+user-interface vty 16 20                  
+#                                         
+return
