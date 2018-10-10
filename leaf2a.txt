@@ -1,7 +1,7 @@
 !Software Version V200R002C50
-!Last configuration was updated at 2018-09-19 19:47:14+00:00
+!Last configuration was updated at 2018-10-10 15:25:26+00:00 by client@huawei.com
 #
-sysname leaf-2a
+sysname Leaf-2a
 #
 dfs-group 1
  priority 150
@@ -36,15 +36,11 @@ sdn agent
   openflow agent
    transport-address 172.168.5.3
 #               
-acl number 2001 
- rule 5 permit source 172.168.5.100 0
- rule 10 permit source 172.168.5.0 0.0.0.255
-#               
 aaa             
- local-user admin1234 password irreversible-cipher $1c$>2P*T%Ahn>$@QXt-{)KRC}cFQ~E,&:O';%X2X.Sr3<eGpQ[w{.L$
+ local-user admin1234 password irreversible-cipher $1c$qeqn@O]2N!$D'k#3,|'y@t(L}S|wAD44"jUS]Z2nGgjX/;}4S>T$
  local-user admin1234 service-type telnet
  local-user admin1234 level 3
- local-user client@huawei.com password irreversible-cipher $1c$_x^/(gEsc@$kxZ"@'0$@7\S0@@X,z$F5VxdW/#J;3d121*S)1e*$
+ local-user client@huawei.com password irreversible-cipher $1c$Dxd1FAHfp*$CVAl1%>k=@Oip!QBO2(*~`A6Y,-ZNOo_3}2cQ%kU$
  local-user client@huawei.com service-type ssh
  local-user client@huawei.com level 3
  #              
@@ -83,7 +79,7 @@ interface 10GE1/0/3
 #               
 interface 10GE1/0/4
  undo portswitch
- ip address 192.168.1.18 255.255.255.252
+ ip address 172.168.1.18 255.255.255.252
  device transceiver 10GBASE-COPPER
 #               
 interface 10GE1/0/5
@@ -92,7 +88,7 @@ interface 10GE1/0/6
 #               
 interface 10GE1/0/7
  undo portswitch
- ip address 192.168.1.30 255.255.255.252
+ ip address 172.168.1.30 255.255.255.252
  device transceiver 10GBASE-COPPER
 #               
 interface 10GE1/0/8
@@ -211,26 +207,26 @@ interface NULL0
 #               
 bgp 100         
  router-id 11.4.4.4
- peer 192.168.1.17 as-number 100
- peer 192.168.1.29 as-number 100
+ peer 172.168.1.17 as-number 100
+ peer 172.168.1.29 as-number 100
  #              
  ipv4-family unicast
-  peer 192.168.1.17 enable
-  peer 192.168.1.29 enable
+  peer 172.168.1.17 enable
+  peer 172.168.1.29 enable
  #              
  l2vpn-family evpn
   policy vpn-target
-  peer 192.168.1.17 enable
-  peer 192.168.1.17 advertise irb
-  peer 192.168.1.29 enable
-  peer 192.168.1.29 advertise irb
+  peer 172.168.1.17 enable
+  peer 172.168.1.17 advertise irb
+  peer 172.168.1.29 enable
+  peer 172.168.1.29 advertise irb
 #               
 ospf 1 router-id 11.4.4.4
  area 0.0.0.0   
   network 10.2.2.2 0.0.0.0
   network 11.4.4.4 0.0.0.0
-  network 192.168.1.16 0.0.0.3
-  network 192.168.1.28 0.0.0.3
+  network 172.168.1.16 0.0.0.3
+  network 172.168.1.28 0.0.0.3
 #               
 ip route-static 192.168.4.0 255.255.255.0 172.168.5.2
 #               
@@ -238,29 +234,20 @@ snmp-agent
 snmp-agent local-engineid 800007DB039C7DA3E59E41
 #               
 snmp-agent sys-info version v3
-snmp-agent group v3 ACTRAP privacy read-view iso notify-view iso
 snmp-agent group v3 dc-admin privacy read-view rd write-view wt notify-view nt
-snmp-agent target-host host-name ACController trap address udp-domain 192.168.4.4 udp-port 1666 params securityname ACTrap_huawei v3 privacy private-netmanager
 #               
 snmp-agent mib-view included nt iso
 snmp-agent mib-view included rd iso
 snmp-agent mib-view included wt iso
-snmp-agent mib-view included iso iso
 snmp-agent mib-view included iso-view iso
 snmp-agent usm-user v3 admin
 snmp-agent usm-user v3 admin group dc-admin
-snmp-agent usm-user v3 admin authentication-mode sha cipher %^%#9C83PQo3W1bCu(7z(_8+,@x40/;gP"MsJe/&K84<%^%#
-snmp-agent usm-user v3 admin privacy-mode aes128 cipher %^%#`ux(WTqpT>f@5H8Xq"Q4r_Qa<#RNe9n@DtV+vu*Q%^%#
-snmp-agent usm-user v3 ACTrap_huawei
-snmp-agent usm-user v3 ACTrap_huawei group ACTRAP
-snmp-agent usm-user v3 ACTrap_huawei authentication-mode sha cipher %^%#LZv#&m^#jBRyW3LO[4qT-KBg8\A}IK)L#3VVg&B=%^%#
-snmp-agent usm-user v3 ACTrap_huawei privacy-mode aes128 cipher %^%#F1(b:[_qJ>\iPn5+&Vh,Bq{8%Mq@x$[)Qn*R#2&4%^%#
+snmp-agent usm-user v3 admin authentication-mode sha cipher %^%#jyO<O-NcR(EIe6;kM%k9`1t8"IxZ99[Fd'/0@&b$%^%#
+snmp-agent usm-user v3 admin privacy-mode aes128 cipher %^%#UqGT50^HN+OGwH>oZ>=5=Q(|,_Cj@:h^xv-yIU;J%^%#
 #               
 snmp-agent trap source MEth0/0/0
 #               
 snmp-agent trap enable
-#               
-lldp enable     
 #               
 snetconf ipv4 server enable
 snetconf ipv6 server enable
@@ -273,14 +260,12 @@ ssh server cipher aes256_ctr aes128_ctr
 ssh server hmac sha2_256_96 sha2_256 sha1_96
 ssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
 #               
-user-interface con 0
- authentication-mode password
- set authentication password cipher $1c$;{NdD*L")Z$O+h$Tu-zQ5Z>3z#>sTJ#nw<-MU/`+=3{F=!TNth"$
+user-interface maximum-vty 8
 #               
-user-interface vty 0 4
- acl 2001 inbound
+user-interface con 0
+#               
+user-interface vty 0 7
  authentication-mode aaa
- user privilege level 3
 #               
 vm-manager      
 #               

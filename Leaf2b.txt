@@ -1,11 +1,10 @@
 !Software Version V200R002C50
-!Last configuration was updated at 2018-09-19 17:14:50+00:00 by client@huawei.com
+!Last configuration was updated at 2018-10-10 15:25:39+00:00 by client@huawei.com
 #
-sysname leaf-2b
+sysname Leaf-2b
 #
 dfs-group 1
- priority 150
- source ip 192.168.1.45 
+ source ip 172.16.1.42 
 #
 system resource standard
 #
@@ -21,7 +20,7 @@ vlan batch 50 4004 to 4008
 #
 mac-address flapping periodical trap enable
 #
-stp mode rstp   
+stp mode rstp
 stp v-stp enable
 #               
 evpn-overlay enable
@@ -38,10 +37,10 @@ sdn agent
    transport-address 172.168.5.4
 #               
 aaa             
- local-user admin1234 password irreversible-cipher $1c$tcVmC9r{C6$[6GQTS=JLHQju\#phXp(W61@3>>R+,zXD:,xTWUU$
+ local-user admin1234 password irreversible-cipher $1c$>9lBQ*Al4V$eW@NKz:+0-hM3qUA<At!p-s'*++r-8UD#4&E@Kj5$
  local-user admin1234 service-type telnet
  local-user admin1234 level 3
- local-user client@huawei.com password irreversible-cipher $1c$-z/1DDIQUT$^}e"(FX8}1_Ght.\!f#1xQcN"`[e$;izGL5E&{pO$
+ local-user client@huawei.com password irreversible-cipher $1c$GfiL)Ud"gE$}ZZ}:y$p,Q+AV*NJd\L:v'Q.Z>!Mv#EtrYM`~kB,$
  local-user client@huawei.com service-type ssh
  local-user client@huawei.com level 3
  #              
@@ -72,6 +71,7 @@ interface Eth-Trunk23
 interface Eth-Trunk24
  port link-type trunk
  port trunk allow-pass vlan 4004 to 4009
+ stp edged-port enable
  dfs-group 1 m-lag 1
 #               
 interface 10GE1/0/1
@@ -86,7 +86,7 @@ interface 10GE1/0/4
 #               
 interface 10GE1/0/5
  undo portswitch
- ip address 192.168.1.22 255.255.255.252
+ ip address 172.168.1.22 255.255.255.252
  device transceiver 10GBASE-COPPER
 #               
 interface 10GE1/0/6
@@ -95,7 +95,7 @@ interface 10GE1/0/7
 #               
 interface 10GE1/0/8
  undo portswitch
- ip address 192.168.1.34 255.255.255.252
+ ip address 172.168.1.34 255.255.255.252
  device transceiver 10GBASE-COPPER
 #               
 interface 10GE1/0/9
@@ -209,26 +209,26 @@ interface NULL0
 #               
 bgp 100         
  router-id 11.5.5.5
- peer 192.168.1.21 as-number 100
- peer 192.168.1.33 as-number 100
+ peer 171.168.1.21 as-number 100
+ peer 171.168.1.33 as-number 100
  #              
  ipv4-family unicast
-  peer 192.168.1.21 enable
-  peer 192.168.1.33 enable
+  peer 171.168.1.21 enable
+  peer 171.168.1.33 enable
  #              
  l2vpn-family evpn
   policy vpn-target
-  peer 192.168.1.21 enable
-  peer 192.168.1.21 advertise irb
-  peer 192.168.1.33 enable
-  peer 192.168.1.33 advertise irb
+  peer 171.168.1.21 enable
+  peer 171.168.1.21 advertise irb
+  peer 171.168.1.33 enable
+  peer 171.168.1.33 advertise irb
 #               
 ospf 1 router-id 11.5.5.5
  area 0.0.0.0   
   network 10.2.2.2 0.0.0.0
   network 11.5.5.5 0.0.0.0
-  network 192.168.1.20 0.0.0.3
-  network 192.168.1.32 0.0.0.3
+  network 172.168.1.20 0.0.0.3
+  network 172.168.1.32 0.0.0.3
 #               
 ip route-static 192.168.4.0 255.255.255.0 172.168.5.2
 #               
@@ -236,23 +236,16 @@ snmp-agent
 snmp-agent local-engineid 800007DB039C7DA3E59E81
 #               
 snmp-agent sys-info version v3
-snmp-agent group v3 ACTRAP privacy read-view iso notify-view iso
 snmp-agent group v3 dc-admin privacy read-view rd write-view wt notify-view nt
-snmp-agent target-host host-name ACController trap address udp-domain 192.168.4.4 udp-port 1666 params securityname ACTrap_huawei v3 privacy private-netmanager
 #               
 snmp-agent mib-view included nt iso
 snmp-agent mib-view included rd iso
 snmp-agent mib-view included wt iso
-snmp-agent mib-view included iso iso
 snmp-agent mib-view included iso-view iso
 snmp-agent usm-user v3 admin
 snmp-agent usm-user v3 admin group dc-admin
-snmp-agent usm-user v3 admin authentication-mode sha cipher %^%#&Bm31-&\v!59eu.b9C43`a+T@1Yy{'iZvE"KY~uC%^%#
-snmp-agent usm-user v3 admin privacy-mode aes128 cipher %^%#B(@/6KsY-%-0K`T0_$%~$`4,;A'cRImhz5IAxZs3%^%#
-snmp-agent usm-user v3 ACTrap_huawei
-snmp-agent usm-user v3 ACTrap_huawei group ACTRAP
-snmp-agent usm-user v3 ACTrap_huawei authentication-mode sha cipher %^%#w3WD~q;(u/bP"Z3U;:D2~&7rYuDB\VnKrEBDeS'W%^%#
-snmp-agent usm-user v3 ACTrap_huawei privacy-mode aes128 cipher %^%#rd^'U09-&5`+FX%hk!2Z>Q2KF91U[FIkXk6h(L;Y%^%#
+snmp-agent usm-user v3 admin authentication-mode sha cipher %^%#HW'c'zBP0">5R=1(,dUE~9QmDQ1wD%p3gu1"(Sg'%^%#
+snmp-agent usm-user v3 admin privacy-mode aes128 cipher %^%#KRLk4#>Td7}CDN="&c8FqO|x-AhDqC3Bd{.u6O]A%^%#
 #               
 snmp-agent trap source MEth0/0/0
 #               
@@ -272,8 +265,6 @@ ssh server hmac sha2_256_96 sha2_256 sha1_96
 ssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
 #               
 user-interface con 0
- authentication-mode password
- set authentication password cipher $1c$W-oB'A]zn9$/0dj2U"`}GUv=0/g%Z]69o}o1_:5i+re\L,YJ.BL$
 #               
 user-interface vty 0 4
  authentication-mode aaa
