@@ -1,15 +1,15 @@
-!Software Version V200R002C50
-!Last configuration was updated at 2018-09-19 17:14:50+00:00 by client@huawei.com
+!Software Version V200R001C00SPC700
+!Last configuration was updated at 2018-10-10 11:19:43+00:00 by client@huawei.com
 #
-sysname leaf-2b
+sysname Spine-1
 #
-dfs-group 1
- priority 150
- source ip 192.168.1.45 
+system tcam ED-extend slot 3 
 #
-system resource standard
+system tcam ED-extend slot 4 
 #
-device board 1 board-type CE6851-48S6Q-HI
+device board 5 board-type CE-MPUA-S
+device board 3 board-type CE-L12XS-ED
+device board 4 board-type CE-L12XS-ED
 #
 drop-profile default
 #
@@ -17,16 +17,39 @@ dcb pfc
 #
 dcb ets-profile default
 #
-vlan batch 50 4004 to 4008
+dfs-group 1
+ priority 150
+ source ip 172.168.1.45 
+ #
+ active-active-gateway
+  peer 172.168.1.46
 #
 mac-address flapping periodical trap enable
 #
-stp mode rstp   
+stp mode rstp
 stp v-stp enable
+#               
+rsa peer-public-key 192.168.4.4
+ public-key-code begin
+ 3082010A       
+  02820101      
+    00E492D3 FC75EBEB AEBDB72C E292A6B3 4E2EACD6 A5DF8623 D1AE3EE4 BDCCD3B4
+    4B449D47 38EB5AF3 1B53A74E 83A368FE 79633A1A DA9B317A A6819C61 9A272104
+    448667B3 98CCC9A4 15A1C150 81B29D75 A40B506A 17C3060E 818C353E E4881766
+    C79695A9 93D3154A 52A7FD92 6866A9FC 42D0AA63 0D037EE3 6CC8197E 9FFE7C91
+    06F9356D 4FFAE5AF F793502B 4B5046ED 47A70738 3FBFAD3C B6EE6FCE 048D617D
+    F44C15BB 87334B87 F94D6D07 67B2BE59 A6993A4C 728CB462 16C40D98 1E72A6AC
+    581EE7DD CA058B7C 6E0391F0 C6123B74 4B69ED01 47AD1151 C348E32B B4C08CC1
+    41209356 AE50532F D29AAD14 03ED4DB0 AD43AEA9 EAF35294 ABF26ED6 5C341769
+    6B          
+  0203          
+    010001      
+ public-key-code end
+ peer-public-key end
 #               
 evpn-overlay enable
 #               
-lacp m-lag system-id a008-6fe0-fc30
+lacp m-lag priority 10
 #               
 telnet ipv6 server disable
 #               
@@ -35,13 +58,16 @@ diffserv domain default
 sdn agent       
  controller-ip 192.168.4.4
   openflow agent
-   transport-address 172.168.5.4
+   transport-address 172.168.5.12
 #               
 aaa             
- local-user admin1234 password irreversible-cipher $1c$tcVmC9r{C6$[6GQTS=JLHQju\#phXp(W61@3>>R+,zXD:,xTWUU$
+ local-user admin1234 password irreversible-cipher $1c$RWv"*kNJhF$[PExF<nZ{-n[a%$\0V-9\xObJI8G=4PV@=K,W`QI$
  local-user admin1234 service-type telnet
  local-user admin1234 level 3
- local-user client@huawei.com password irreversible-cipher $1c$-z/1DDIQUT$^}e"(FX8}1_Ght.\!f#1xQcN"`[e$;izGL5E&{pO$
+ local-user usersnmp password irreversible-cipher $1c$&meA8:lPj7$H~EL62qK+HTt-D5DfEQX8\f^Mz"!$V{d7FZ;-CE'$
+ local-user usersnmp service-type snmp
+ local-user usersnmp level 3
+ local-user client@huawei.com password irreversible-cipher $1c$uB1vOIA$O3$90N//]g2|8J>$#%n*rCAQx4%Rm4vS9lWkCHE:M~7$
  local-user client@huawei.com service-type ssh
  local-user client@huawei.com level 3
  #              
@@ -54,214 +80,189 @@ aaa
  domain default 
  #              
  domain default_admin
+ #              
+ task-group tasksnmp
+  task interface-mgr read write execute
+  task config read write execute
+  task snmp read write
+  task vlan read write execute
+  task shell read write execute
+  task cli read execute
+ #              
+ user-group groupsnmp
+  task-group tasksnmp
 #               
 stack           
 #               
-interface Vlanif50
-#               
-interface Vlanif4008
- ip address 10.1.4.250 255.255.255.0
-#               
 interface MEth0/0/0
- ip address 172.168.5.4 255.255.255.0
+ ip address 172.168.5.12 255.255.0.0
 #               
-interface Eth-Trunk23
+interface Eth-Trunk1
  mode lacp-static
  peer-link 1    
 #               
+interface Eth-Trunk23
+#               
 interface Eth-Trunk24
- port link-type trunk
- port trunk allow-pass vlan 4004 to 4009
  dfs-group 1 m-lag 1
 #               
-interface 10GE1/0/1
+interface Eth-Trunk34
+ dfs-group 1 m-lag 2
 #               
-interface 10GE1/0/2
+interface 10GE3/0/0
+#               
+interface 10GE3/0/1
+#               
+interface 10GE3/0/2
+#               
+interface 10GE3/0/3
  eth-trunk 24   
- device transceiver 10GBASE-COPPER
+ device transceiver 1000BASE-T
 #               
-interface 10GE1/0/3
+interface 10GE3/0/4
+ eth-trunk 34   
+ device transceiver 1000BASE-T
 #               
-interface 10GE1/0/4
+interface 10GE3/0/5
 #               
-interface 10GE1/0/5
+interface 10GE3/0/6
+#               
+interface 10GE3/0/7
+#               
+interface 10GE3/0/8
+#               
+interface 10GE3/0/9
+#               
+interface 10GE3/0/10
+#               
+interface 10GE3/0/11
  undo portswitch
- ip address 192.168.1.22 255.255.255.252
+ ip address 172.168.1.45 255.255.255.0
  device transceiver 10GBASE-COPPER
 #               
-interface 10GE1/0/6
+interface 10GE4/0/0
 #               
-interface 10GE1/0/7
+interface 10GE4/0/1
+ device transceiver 1000BASE-T
 #               
-interface 10GE1/0/8
+interface 10GE4/0/2
+ device transceiver 1000BASE-T
+#               
+interface 10GE4/0/3
+#               
+interface 10GE4/0/4
  undo portswitch
- ip address 192.168.1.34 255.255.255.252
+ ip address 172.168.1.17 255.255.255.252
  device transceiver 10GBASE-COPPER
 #               
-interface 10GE1/0/9
-#               
-interface 10GE1/0/10
-#               
-interface 10GE1/0/11
-#               
-interface 10GE1/0/12
-#               
-interface 10GE1/0/13
-#               
-interface 10GE1/0/14
-#               
-interface 10GE1/0/15
-#               
-interface 10GE1/0/16
-#               
-interface 10GE1/0/17
+interface 10GE4/0/5
  undo portswitch
- ip address 172.16.1.42 255.255.255.252
+ ip address 172.168.1.21 255.255.255.252
  device transceiver 10GBASE-COPPER
 #               
-interface 10GE1/0/18
- eth-trunk 23   
+interface 10GE4/0/6
+ undo portswitch
+ ip address 172.168.1.57 255.255.255.252
  device transceiver 10GBASE-COPPER
 #               
-interface 10GE1/0/19
+interface 10GE4/0/7
 #               
-interface 10GE1/0/20
+interface 10GE4/0/8
 #               
-interface 10GE1/0/21
+interface 10GE4/0/9
+ undo portswitch
+ ip address 172.168.1.49 255.255.255.252
+ device transceiver 10GBASE-COPPER
 #               
-interface 10GE1/0/22
+interface 10GE4/0/10
+ undo portswitch
+ ip address 172.168.1.13 255.255.255.252
+ device transceiver 10GBASE-COPPER
 #               
-interface 10GE1/0/23
-#               
-interface 10GE1/0/24
-#               
-interface 10GE1/0/25
-#               
-interface 10GE1/0/26
-#               
-interface 10GE1/0/27
-#               
-interface 10GE1/0/28
-#               
-interface 10GE1/0/29
-#               
-interface 10GE1/0/30
-#               
-interface 10GE1/0/31
-#               
-interface 10GE1/0/32
-#               
-interface 10GE1/0/33
-#               
-interface 10GE1/0/34
-#               
-interface 10GE1/0/35
-#               
-interface 10GE1/0/36
-#               
-interface 10GE1/0/37
-#               
-interface 10GE1/0/38
-#               
-interface 10GE1/0/39
-#               
-interface 10GE1/0/40
-#               
-interface 10GE1/0/41
-#               
-interface 10GE1/0/42
-#               
-interface 10GE1/0/43
-#               
-interface 10GE1/0/44
-#               
-interface 10GE1/0/45
-#               
-interface 10GE1/0/46
-#               
-interface 10GE1/0/47
-#               
-interface 10GE1/0/48
-#               
-interface 40GE1/0/1
-#               
-interface 40GE1/0/2
-#               
-interface 40GE1/0/3
-#               
-interface 40GE1/0/4
-#               
-interface 40GE1/0/5
-#               
-interface 40GE1/0/6
+interface 10GE4/0/11
+ eth-trunk 1    
+ device transceiver 10GBASE-COPPER
 #               
 interface LoopBack0
- ip address 10.2.2.2 255.255.255.255
+ ip address 10.45.45.45 255.255.255.255
 #               
 interface LoopBack1
- ip address 11.5.5.5 255.255.255.255
+ ip address 11.1.1.1 255.255.255.255
+#               
+interface Sip5/0/0
+#               
+interface Sip5/0/1
 #               
 interface Nve1  
- source 10.2.2.2
- mac-address 0000-5e00-0101
+ source 10.45.45.45
 #               
 interface NULL0 
 #               
 bgp 100         
- router-id 11.5.5.5
- peer 192.168.1.21 as-number 100
- peer 192.168.1.33 as-number 100
+ router-id 11.1.1.1
+ peer 172.168.1.14 as-number 100
+ peer 172.168.1.18 as-number 100
+ peer 172.168.1.22 as-number 100
+ peer 172.168.1.46 as-number 100
+ peer 172.168.1.50 as-number 100
+ peer 172.168.1.58 as-number 100
  #              
  ipv4-family unicast
-  peer 192.168.1.21 enable
-  peer 192.168.1.33 enable
+  peer 172.168.1.14 enable
+  peer 172.168.1.18 enable
+  peer 172.168.1.22 enable
+  peer 172.168.1.46 enable
+  peer 172.168.1.50 enable
+  peer 172.168.1.58 enable
  #              
  l2vpn-family evpn
-  policy vpn-target
-  peer 192.168.1.21 enable
-  peer 192.168.1.21 advertise irb
-  peer 192.168.1.33 enable
-  peer 192.168.1.33 advertise irb
+  undo policy vpn-target
+  peer 172.168.1.14 enable
+  peer 172.168.1.14 advertise irb
+  peer 172.168.1.14 reflect-client
+  peer 172.168.1.18 enable
+  peer 172.168.1.18 advertise irb
+  peer 172.168.1.18 reflect-client
+  peer 172.168.1.22 enable
+  peer 172.168.1.22 advertise irb
+  peer 172.168.1.22 reflect-client
+  peer 172.168.1.46 enable
+  peer 172.168.1.46 advertise irb
+  peer 172.168.1.46 reflect-client
+  peer 172.168.1.50 enable
+  peer 172.168.1.50 advertise irb
+  peer 172.168.1.50 reflect-client
+  peer 172.168.1.58 enable
+  peer 172.168.1.58 advertise irb
+  peer 172.168.1.58 reflect-client
 #               
-ospf 1 router-id 11.5.5.5
+ospf 1 router-id 11.1.1.1
  area 0.0.0.0   
-  network 10.2.2.2 0.0.0.0
-  network 11.5.5.5 0.0.0.0
-  network 192.168.1.20 0.0.0.3
-  network 192.168.1.32 0.0.0.3
+  network 10.45.45.45 0.0.0.0
+  network 11.1.1.1 0.0.0.0
+  network 172.168.1.12 0.0.0.3
+  network 172.168.1.16 0.0.0.3
+  network 172.168.1.20 0.0.0.3
+  network 172.168.1.44 0.0.0.3
+  network 172.168.1.48 0.0.0.3
+  network 172.168.1.56 0.0.0.3
 #               
 ip route-static 192.168.4.0 255.255.255.0 172.168.5.2
 #               
 snmp-agent      
-snmp-agent local-engineid 800007DB039C7DA3E59E81
+snmp-agent local-engineid 800007DB039C7DA3871101
 #               
 snmp-agent sys-info version v3
 snmp-agent group v3 ACTRAP privacy read-view iso notify-view iso
-snmp-agent group v3 dc-admin privacy read-view rd write-view wt notify-view nt
 snmp-agent target-host host-name ACController trap address udp-domain 192.168.4.4 udp-port 1666 params securityname ACTrap_huawei v3 privacy private-netmanager
 #               
-snmp-agent mib-view included nt iso
-snmp-agent mib-view included rd iso
-snmp-agent mib-view included wt iso
 snmp-agent mib-view included iso iso
-snmp-agent mib-view included iso-view iso
-snmp-agent usm-user v3 admin
-snmp-agent usm-user v3 admin group dc-admin
-snmp-agent usm-user v3 admin authentication-mode sha cipher %^%#&Bm31-&\v!59eu.b9C43`a+T@1Yy{'iZvE"KY~uC%^%#
-snmp-agent usm-user v3 admin privacy-mode aes128 cipher %^%#B(@/6KsY-%-0K`T0_$%~$`4,;A'cRImhz5IAxZs3%^%#
-snmp-agent usm-user v3 ACTrap_huawei
-snmp-agent usm-user v3 ACTrap_huawei group ACTRAP
-snmp-agent usm-user v3 ACTrap_huawei authentication-mode sha cipher %^%#w3WD~q;(u/bP"Z3U;:D2~&7rYuDB\VnKrEBDeS'W%^%#
-snmp-agent usm-user v3 ACTrap_huawei privacy-mode aes128 cipher %^%#rd^'U09-&5`+FX%hk!2Z>Q2KF91U[FIkXk6h(L;Y%^%#
 #               
-snmp-agent trap source MEth0/0/0
-#               
-snmp-agent trap enable
+snmp-agent local-user v3 usersnmp authentication-mode sha cipher %^%#vAl:J/|5cNKo9AV-y'k2hFT)*10:J@EbT`<Y*UA<%^%# privacy-mode aes128 cipher %^%#;KBoBvvTK$'<z~Ph2_^5d:l=UOQ@%,`r=K~J[CV5%^%#
 #               
 lldp enable     
 #               
-snetconf ipv4 server enable
-snetconf ipv6 server enable
+snetconf server enable
 ssh user client@huawei.com
 ssh user client@huawei.com authentication-type password
 ssh user client@huawei.com service-type snetconf
@@ -271,14 +272,25 @@ ssh server cipher aes256_ctr aes128_ctr
 ssh server hmac sha2_256_96 sha2_256 sha1_96
 ssh server key-exchange dh_group_exchange_sha256 dh_group_exchange_sha1 ecdh_sha2_nistp256 ecdh_sha2_nistp384 ecdh_sha2_nistp521 sm2_kep
 #               
+ssh client 192.168.4.4 assign rsa-key 192.168.4.4
+#               
+user-interface maximum-vty 8
+#               
 user-interface con 0
- authentication-mode password
- set authentication password cipher $1c$W-oB'A]zn9$/0dj2U"`}GUv=0/g%Z]69o}o1_:5i+re\L,YJ.BL$
 #               
 user-interface vty 0 4
  authentication-mode aaa
- user privilege level 3
+ history-command max-size 20
+ idle-timeout 20 0
+ screen-length 30
+ protocol inbound ssh
+#               
+user-interface vty 5 7
+ authentication-mode aaa
+ history-command max-size 20
+ idle-timeout 20 0
+ screen-length 30
 #               
 vm-manager      
 #               
-return
+return 
